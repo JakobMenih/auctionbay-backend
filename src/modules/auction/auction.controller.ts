@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { AuctionService } from './auction.service';
-import { CreateAuctionDto } from './dto/create-auction.dto';
+import { CreateAuctionDto } from '../user/dto/create-auction.dto';
 
 @Controller('auction')
 export class AuctionController {

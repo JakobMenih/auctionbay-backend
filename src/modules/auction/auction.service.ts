@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Auction } from '../../entities/auction.entity';
-import { CreateAuctionDto } from './dto/create-auction.dto';
+import { CreateAuctionDto } from '../user/dto/create-auction.dto';
 
 @Injectable()
 export class AuctionService {
@@ -21,6 +21,9 @@ export class AuctionService {
   }
 
   findOne(id: number): Promise<Auction> {
-    return this.auctionRepository.findOne(id, { relations: ['user', 'bids'] });
+    return this.auctionRepository.findOne({
+      where: { id },
+      relations: ['user', 'bids'],
+    });
   }
 }
