@@ -13,10 +13,10 @@ import { User } from '../../entities/user.entity';
     UserModule,
     PassportModule,
     JwtModule.register({
-      secret: 'your_jwt_secret_key', // Replace with your secret key
-      signOptions: { expiresIn: '1h' },
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '60m' },
     }),
-    TypeOrmModule.forFeature([User]),
+    UserModule,
   ],
   providers: [AuthService, JwtStrategy],
   controllers: [AuthController],

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Auction } from '../../entities/auction.entity';
-import { CreateAuctionDto } from '../user/dto/create-auction.dto';
+import { CreateAuctionDto } from './dto/create-auction.dto';
 
 @Injectable()
 export class AuctionService {

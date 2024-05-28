@@ -6,20 +6,26 @@ import { UsernpmModule } from './install/usernpm/usernpm.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { AuctionModule } from './modules/auction/auction.module';
 import { UserModule } from './modules/user/user.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      //port: 5433,
-      port: 5432,
-      username: 'postgres',
-      //password: 'admin',
-      password: 'postgres',
-      database: 'auctionbay',
-      entities: ['dist/**/*.entity.js'],
-      synchronize: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: configService.get<string>('DB_TYPE') as any,
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USERNAME'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_NAME'),
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        synchronize: true,
+      }),
+      inject: [ConfigService],
     }),
     AuthModule,
     AuctionModule,
