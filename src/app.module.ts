@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsernpmModule } from './install/usernpm/usernpm.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { AuctionModule } from './modules/auction/auction.module';
 import { UserModule } from './modules/user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { User } from './entities/user.entity';
+import { Auction } from './entities/auction.entity';
+import { Bid } from './entities/bid.entity';
 
 @Module({
   imports: [
@@ -22,7 +22,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        entities: [User, Auction, Bid], // add all entities here
         synchronize: true,
       }),
       inject: [ConfigService],
@@ -30,9 +30,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     AuthModule,
     AuctionModule,
     UserModule,
-    UsernpmModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

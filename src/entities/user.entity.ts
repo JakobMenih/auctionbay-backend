@@ -1,16 +1,18 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Auction } from './auction.entity';
 import { Bid } from './bid.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   username: string;
 
-  @Column()
+  @Column({ nullable: true })
+  @Exclude()
   password: string;
 
   @OneToMany(() => Auction, (auction) => auction.user)

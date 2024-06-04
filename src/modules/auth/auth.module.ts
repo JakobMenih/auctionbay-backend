@@ -4,13 +4,13 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
+import * as dotenv from 'dotenv';
 import { UserModule } from '../user/user.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../../entities/user.entity';
+
+dotenv.config();
 
 @Module({
   imports: [
-    UserModule,
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
