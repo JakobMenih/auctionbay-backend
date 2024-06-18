@@ -1,13 +1,20 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Req } from '@nestjs/common';
 import { UserService } from './user.service';
-import { User } from '../../entities/user.entity';
+import { UpdatePasswordDto } from './dto/update-password.dto';
+import { AuthGuard } from '@nestjs/passport';
 
-@Controller('user')
+@Controller('me')
+@UseGuards(AuthGuard('jwt'))
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
-  @Get(':id')
-  findOne(@Param('id') id: number): Promise<User> {
-    return this.userService.findOneById(id);
+  @Post('update-password')
+  async updatePassword(
+    @Body() updatePasswordDto: UpdatePasswordDto,
+    @Req() req,
+  ) {
+    const userId = req.user.userId;
+    await this.userService.updatePassword(userId, updatePasswordDto);
+    return { message: 'Password updated successfully' };
   }
 }
